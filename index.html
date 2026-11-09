@@ -1,159 +1,238 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="light dark">
-<title>Этанол C₂H₅OH — 3D-модель</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;600&family=Unbounded:wght@600&display=swap">
-<style>
-:root{--bg:#e8ecef;--ink:#1b232b;--muted:#586470;--line:rgba(27,35,43,.16);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12171c;--ink:#eaeef1;--muted:#98a4af;--line:rgba(234,238,241,.18)}}
-:root[data-theme="dark"]{--bg:#12171c;--ink:#eaeef1;--muted:#98a4af;--line:rgba(234,238,241,.18)}
-*,*::before,*::after{box-sizing:inherit}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-html,body{height:100%;margin:0}
-body{display:flex;flex-direction:column;overflow:hidden;background:var(--bg);color:var(--ink);font:400 16px/1.4 'Golos Text',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
-header{padding:22px 22px 0}
-h1{margin:0;font:600 clamp(34px,11vw,52px)/1 'Unbounded','Arial Rounded MT Bold',system-ui,sans-serif;letter-spacing:-.01em}
-.name{margin:8px 0 0;color:var(--muted)}
-.f{display:flex;flex-wrap:wrap;gap:4px 18px;margin:14px 0 0;font-size:20px;font-weight:600}
-.f span{color:var(--muted);font-weight:400}
-sub{font-size:.62em;line-height:0}
-#stage{position:relative;flex:1;min-height:0}
-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab;outline:0}
-canvas:active{cursor:grabbing}
-canvas:focus-visible{outline:2px solid var(--ink);outline-offset:-4px;border-radius:14px}
-#hint{position:absolute;left:22px;right:22px;bottom:6px;margin:0;font-size:13px;color:var(--muted);pointer-events:none;transition:opacity .4s}
-#hint.off{opacity:0}
-.legend{display:flex;flex-wrap:wrap;gap:8px 20px;margin:0;padding:12px 22px 8px;list-style:none;border-top:1px solid var(--line);font-size:15px}
-.legend li{display:flex;align-items:center;gap:8px}
-.legend i{width:16px;height:16px;border-radius:50%;background:var(--c)}
-.legend b{font-weight:600}
-.legend em{font-style:normal;color:var(--muted)}
-.about{max-width:62ch;margin:12px 0 0;font-size:14px;line-height:1.45;color:var(--muted)}
-.sign{margin:0;padding:0 22px 14px;text-align:right;font-size:13px;line-height:1.4;color:var(--muted)}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#071426">
+  <title>Этанол — интерактивная 3D-модель</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+:root{--bg:#071426;--blue:#64baff;--muted:#9aacc3;--white:#f2f7ff;--line:rgba(176,211,255,.14)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 78% 15%,#122e4b 0,transparent 36%),radial-gradient(ellipse at 10% 75%,#0b2440 0,transparent 32%),var(--bg);color:var(--white);font-family:Manrope,Arial,sans-serif;min-height:100vh;cursor:none}
+a,button{cursor:none}a{color:inherit;text-decoration:none}.glass{background:linear-gradient(135deg,rgba(255,255,255,.095),rgba(255,255,255,.025));border:1px solid var(--line);box-shadow:0 20px 70px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.09);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.cursor{position:fixed;z-index:1000;left:0;top:0;width:34px;height:34px;border-radius:12px;display:grid;place-items:center;color:#eaf7ff;font-size:14px;font-weight:800;background:linear-gradient(145deg,rgba(115,198,255,.72),rgba(24,91,160,.42));border:1px solid rgba(177,225,255,.8);box-shadow:0 0 22px rgba(73,169,255,.45),inset 0 1px 5px rgba(255,255,255,.6);pointer-events:none;transform:translate(-50%,-50%);transition:width .18s,height .18s}
+.intro{position:fixed;inset:0;z-index:100;background:radial-gradient(ellipse at 50% 45%,#153b61 0,#091a30 48%,#050d19 100%);display:grid;place-items:center;transition:opacity .8s,visibility .8s;overflow:hidden}.intro.hidden{opacity:0;visibility:hidden;pointer-events:none}.intro-glow{position:absolute;width:560px;height:560px;border-radius:50%;background:rgba(60,156,255,.12);filter:blur(90px)}.intro-card{position:relative;width:min(480px,calc(100% - 36px));padding:48px 42px 38px;text-align:center;border:1px solid rgba(171,218,255,.22);border-radius:30px;background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.035));box-shadow:0 35px 100px #020914aa,inset 0 1px rgba(255,255,255,.18);backdrop-filter:blur(24px)}.intro-mark{width:58px;height:58px;border-radius:19px;margin:0 auto 28px;display:grid;place-items:center;font-size:25px;font-weight:800;background:linear-gradient(145deg,#8bd5ff,#1b68b0);box-shadow:0 8px 35px #2c9fff66,inset 0 2px 8px #ffffffa8}.intro-mark span{font-size:10px;position:absolute;margin:24px 0 0 28px;color:#d7efff}.eyebrow{font-size:10px;letter-spacing:2.2px;color:#7dbfff;font-weight:800}.intro h1{font-size:clamp(38px,8vw,60px);line-height:1.03;margin:17px 0 20px;letter-spacing:-3px}.intro h1 span{color:#83caff}.intro-authors{color:#c1d4e9;line-height:1.8;font-size:14px}.intro-group{font-size:12px;letter-spacing:1.5px;color:#9bb4cf;margin-top:22px}.loader{height:3px;background:#ffffff18;border-radius:9px;overflow:hidden;margin:28px auto 0;max-width:220px}.loader span{display:block;width:45%;height:100%;background:#75c5ff;box-shadow:0 0 14px #65baff;animation:load 1.6s ease-in-out infinite}@keyframes load{0%{transform:translateX(-110%)}100%{transform:translateX(330%)}}.enter-btn{margin-top:24px;padding:12px 20px;border-radius:30px;border:1px solid #8acfff88;background:#4baaff20;color:#eaf7ff;font:600 12px Manrope;transition:.25s}.enter-btn:hover{background:#4baaff40;transform:translateY(-2px)}.enter-btn span{margin-left:15px}.intro-foot{position:absolute;bottom:26px;font-size:9px;letter-spacing:3px;color:#58718e}
+.site{max-width:1440px;margin:auto;padding:28px 6.2% 26px;opacity:0;transform:translateY(12px);transition:opacity .8s,transform .8s}.site.ready{opacity:1;transform:none}.topbar{height:68px;border-radius:18px;padding:0 24px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:11px;font-size:12px;font-weight:800;letter-spacing:1.5px}.brand-icon{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(145deg,#83d3ff,#246ba9);font-size:17px;box-shadow:0 5px 20px #3199ed55}.brand-light{color:#83caff}.top-tag{font-size:9px;letter-spacing:1.8px;color:#9eb5ce}.top-tag i,.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#69d8b0;box-shadow:0 0 12px #69d8b0;margin-right:8px}.top-link{font-size:11px;color:#b9cce1}.top-link span{color:#79c5ff;margin-left:8px}
+.hero{display:grid;grid-template-columns:.82fr 1.18fr;gap:5%;align-items:center;padding:75px 0 62px}.hero-copy{padding-left:4%}.hero-copy .eyebrow{display:flex;align-items:center;gap:12px}.eyebrow-line{width:25px;height:1px;background:#6bbcff}.hero h1{font-size:clamp(58px,7vw,100px);letter-spacing:-7px;line-height:.98;margin:24px 0 12px}.dot{color:#65baff}.formula{font-size:18px;color:#9cc7ec;letter-spacing:1px}.formula span{color:#4d7da7;margin:0 8px}.lead{max-width:430px;color:#a9bad0;font-size:14px;line-height:1.9;margin:24px 0 32px}.facts{display:flex;gap:26px;border-top:1px solid var(--line);padding-top:23px}.facts>div{display:flex;flex-direction:column;gap:5px}.fact-number{font-size:25px;font-weight:800;color:#e9f5ff}.fact-label{font-size:9px;color:#8097b2}.scroll-hint{display:inline-flex;align-items:center;gap:11px;margin-top:45px;font-size:9px;letter-spacing:1.8px;color:#8eabc9}.scroll-wheel{width:18px;height:25px;border:1px solid #6caee1;border-radius:12px;position:relative}.scroll-wheel:after{content:"";position:absolute;left:7px;top:5px;width:2px;height:5px;border-radius:4px;background:#80caff}
+.visual-wrap{min-width:0}.visual-caption{font-size:9px;letter-spacing:1.7px;color:#8da9c6;margin:0 5px 13px}.caption-right{float:right;color:#526d89}.model-frame{height:470px;border-radius:27px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 48%,rgba(47,119,178,.22),transparent 60%),linear-gradient(145deg,rgba(17,48,78,.68),rgba(5,18,33,.75))}.model-frame:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(149,203,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(149,203,255,.035) 1px,transparent 1px);background-size:38px 38px;mask-image:linear-gradient(transparent,#000 25%,#000 75%,transparent)}.model-halo{position:absolute;width:330px;height:330px;left:50%;top:48%;transform:translate(-50%,-50%);border-radius:50%;background:#2f9fff19;filter:blur(55px)}canvas#molecule{position:absolute;inset:0;width:100%;height:100%;z-index:1}.model-label{position:absolute;z-index:2;font-size:11px;font-weight:800;letter-spacing:1px;color:#b9dfff;pointer-events:none}.model-label small{display:block;font-size:7px;letter-spacing:1.5px;color:#718ba8;margin-top:3px}.label-carbon{top:26%;left:12%}.label-oxygen{top:26%;right:12%}.model-controls{position:absolute;bottom:20px;left:22px;z-index:3;color:#819ab5;font-size:9px;letter-spacing:.3px}.model-controls span{color:#78c7ff;font-size:16px;margin-right:6px}.model-controls b{color:#4e7195;margin:0 5px}.model-chip{position:absolute;right:20px;bottom:17px;z-index:3;border:1px solid #9acfff33;border-radius:9px;padding:7px 10px;font-size:11px;color:#d9edff;background:#9ccfff0b}.model-chip span{font-size:8px;color:#6fa9d6;letter-spacing:1px;margin-left:5px}.legend{display:flex;gap:22px;padding:14px 18px;border-radius:14px;margin-top:13px;justify-content:center}.legend span{font-size:9px;color:#91a9c4;display:flex;align-items:center;gap:7px}.legend b{color:#e5f3ff}.atom-dot{width:8px;height:8px;border-radius:50%;display:inline-block}.carbon{background:#4b5a70}.hydrogen{background:#f2d8ad}.oxygen{background:#f07882}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 0 65px}.info-card{border-radius:19px;padding:25px 26px;min-height:205px}.info-card .eyebrow{font-size:8px}.info-card h2{font-size:20px;line-height:1.35;letter-spacing:-.7px;margin:20px 0 12px}.info-card p:last-child{font-size:11px;line-height:1.8;color:#9eb1c9;margin:0}.blue-text{color:#76c6ff}.footer{border-top:1px solid var(--line);padding-top:23px;display:flex;justify-content:space-between;align-items:center;color:#7088a4;font-size:9px;letter-spacing:.4px}.footer>div:first-child{display:flex;align-items:center;gap:10px}.footer-mark{font-size:18px;font-weight:800;color:#75c4ff}.authors{color:#a4b7cd}.authors span{color:#4f91c7;margin:0 5px}
+@media(max-width:900px){.hero{grid-template-columns:1fr;gap:35px;padding:55px 0}.hero-copy{padding:0}.model-frame{height:420px}.info-grid{grid-template-columns:1fr 1fr}.info-card:last-child{grid-column:span 2}}
+@media(max-width:600px){body{cursor:auto}.cursor{display:none}a,button{cursor:pointer}.site{padding:15px 17px 22px}.topbar{height:58px;padding:0 14px}.top-tag{display:none}.top-link{font-size:10px}.hero{padding:48px 0 42px}.hero h1{font-size:66px;letter-spacing:-5px}.lead{font-size:13px}.facts{gap:18px}.fact-number{font-size:22px}.fact-label{font-size:8px}.model-frame{height:350px}.model-controls{font-size:8px;left:12px;bottom:14px}.model-chip{right:10px;bottom:12px;font-size:9px}.label-carbon{left:7%}.label-oxygen{right:7%}.legend{gap:12px;padding:12px 8px}.legend span{font-size:8px;gap:5px}.info-grid{grid-template-columns:1fr;margin-bottom:45px}.info-card:last-child{grid-column:auto}.info-card{min-height:0}.footer{gap:12px;align-items:flex-start;flex-direction:column}.authors{font-size:8px}.intro-card{padding:38px 24px 30px}}
+
+  </style>
 </head>
 <body>
-<header>
-  <h1>Этанол</h1>
-  <p class="name">этиловый спирт</p>
-  <p class="f"><strong>C<sub>2</sub>H<sub>5</sub>OH</strong><span>CH<sub>3</sub>–CH<sub>2</sub>–OH</span></p>
-  <p class="about">Спирты — органические вещества, в молекулах которых есть гидроксильная группа –OH. Этанол — самый известный из них: его используют как растворитель, антисептик и топливо. На модели шарики — атомы, палочки — связи между ними.</p>
-</header>
-<div id="stage">
-  <canvas id="c" tabindex="0" role="img" aria-label="3D-модель молекулы этанола. Вращение стрелками, масштаб плюсом и минусом."></canvas>
-  <p id="hint">Тяни, чтобы вращать. Щипок меняет масштаб.</p>
-</div>
-<ul class="legend">
-  <li><i style="--c:#6a4a30"></i><b>C</b> углерод <em>×2</em></li>
-  <li><i style="--c:#f0c48f"></i><b>H</b> водород <em>×6</em></li>
-  <li><i style="--c:#cc3a2f"></i><b>O</b> кислород <em>×1</em></li>
-</ul>
-<p class="sign">Трофимус М.К., Греков Д.А.<br>Группа МТ-1126</p>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-(function(){
-var stage=document.getElementById('stage'),canvas=document.getElementById('c'),hint=document.getElementById('hint');
-if(!window.THREE){hint.textContent='Не удалось загрузить 3D-библиотеку. Обнови страницу.';return;}
-var renderer;
-try{renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true});}
-catch(e){hint.textContent='Не удалось запустить 3D: в браузере выключен WebGL.';return;}
-renderer.setClearColor(0x000000,0);
-var scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(38,1,0.1,100);
-scene.add(new THREE.HemisphereLight(0xffffff,0x8d7b68,0.6));
-var key=new THREE.DirectionalLight(0xffffff,0.75);key.position.set(3,5,7);scene.add(key);
+  <div class="cursor" aria-hidden="true">М</div>
 
-/* атомы: элемент, x, y, z (Å); связи: пары индексов */
-var K=1.2;
-var EL={C:{r:.46,c:0x6a4a30,t:'#f7ead6'},O:{r:.44,c:0xcc3a2f,t:'#ffffff'},H:{r:.3,c:0xf0c48f,t:'#3a2a1a'}};
-var A=[['C',-1.241,-0.878,0],['C',0,0,0],['O',1.168,-0.826,0],
-['H',-1.241,-1.507,0.89],['H',-1.241,-1.507,-0.89],['H',-2.131,-0.249,0],
-['H',0,0.629,0.89],['H',0,0.629,-0.89],['H',1.942,-0.259,0]];
-var B=[[0,1],[1,2],[0,3],[0,4],[0,5],[1,6],[1,7],[2,8]];
+  <section class="intro" id="intro">
+    <div class="intro-glow"></div>
+    <div class="intro-card">
+      <div class="intro-mark">М<span>Т</span></div>
+      <p class="eyebrow">ХИМИЯ · 3D PROJECT</p>
+      <h1>Проектная<br><span>работа</span></h1>
+      <p class="intro-authors">От Трофимус Михаила<br>и Грекова Данила</p>
+      <div class="loader"><span></span></div>
+      <p class="intro-group">Группа МТ-1126</p>
+      <button id="enterBtn" class="enter-btn">Открыть проект <span>↗</span></button>
+    </div>
+    <div class="intro-foot">INTERACTIVE MOLECULE EXPERIENCE</div>
+  </section>
 
-var cen=new THREE.Vector3();
-A.forEach(function(a){cen.x+=a[1];cen.y+=a[2];cen.z+=a[3];});cen.multiplyScalar(1/A.length);
-var P=A.map(function(a){return new THREE.Vector3(a[1],a[2],a[3]).sub(cen).multiplyScalar(K);});
+  <main class="site" id="site">
+    <header class="topbar glass">
+      <a class="brand" href="#"><span class="brand-icon">M</span><span>MOLECULE<span class="brand-light"> LAB</span></span></a>
+      <div class="top-tag"><i></i> ИНТЕРАКТИВНАЯ 3D-МОДЕЛЬ</div>
+      <a class="top-link" href="#about">О проекте <span>↗</span></a>
+    </header>
 
-var group=new THREE.Group();scene.add(group);group.rotation.set(0.35,-0.7,0);
-var ball=new THREE.IcosahedronGeometry(1,1),rod=new THREE.CylinderGeometry(1,1,1,6,1,true);
-var rodMat=new THREE.MeshPhongMaterial({color:0xd9a96f,flatShading:true,shininess:8});
-var Y=new THREE.Vector3(0,1,0),balls=[],tags=[];
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-line"></span> ОРГАНИЧЕСКАЯ ХИМИЯ / СПИРТЫ</p>
+        <h1>Этанол<span class="dot">.</span></h1>
+        <p class="formula">C<sub>2</sub>H<sub>6</sub>O <span>·</span> CH<sub>3</sub>–CH<sub>2</sub>–OH</p>
+        <p class="lead">Простейший представитель одноатомных предельных спиртов — молекула, в которой углеродная цепь соединена с гидроксильной группой.</p>
+        <div class="facts">
+          <div><span class="fact-number">02</span><span class="fact-label">атома углерода</span></div>
+          <div><span class="fact-number">06</span><span class="fact-label">атомов водорода</span></div>
+          <div><span class="fact-number">01</span><span class="fact-label">атом кислорода</span></div>
+        </div>
+        <a class="scroll-hint" href="#model"><span class="scroll-wheel"></span> ИЗУЧИТЬ МОЛЕКУЛУ</a>
+      </div>
 
-A.forEach(function(a,i){
-  var e=EL[a[0]],m=new THREE.Mesh(ball,new THREE.MeshPhongMaterial({color:e.c,flatShading:true,shininess:20,specular:0x333333}));
-  m.scale.setScalar(e.r);m.position.copy(P[i]);group.add(m);balls.push(m);
-  var cv=document.createElement('canvas');cv.width=cv.height=128;
-  var g=cv.getContext('2d');g.font='700 92px system-ui,Arial,sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillStyle=e.t;g.fillText(a[0],64,70);
-  var s=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(cv),transparent:true,depthWrite:false}));
-  s.scale.setScalar(e.r*1.6);scene.add(s);tags.push(s);
+      <div class="visual-wrap" id="model">
+        <div class="visual-caption"><span class="live-dot"></span> 3D MOLECULAR VIEW <span class="caption-right">01 / 01</span></div>
+        <div class="model-frame glass">
+          <div class="model-halo"></div>
+          <canvas id="molecule"></canvas>
+          <div class="model-label label-carbon">C <small>УГЛЕРОД</small></div>
+          <div class="model-label label-oxygen">O <small>КИСЛОРОД</small></div>
+          <div class="model-controls"><span>↔</span> Перетаскивайте, чтобы вращать <b>·</b> Колесо — масштаб</div>
+          <div class="model-chip">C₂H₆O <span>ETHANOL</span></div>
+        </div>
+        <div class="legend glass">
+          <span><i class="atom-dot carbon"></i> Углерод <b>C</b></span>
+          <span><i class="atom-dot hydrogen"></i> Водород <b>H</b></span>
+          <span><i class="atom-dot oxygen"></i> Кислород <b>O</b></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="info-grid" id="about">
+      <article class="info-card glass">
+        <p class="eyebrow">01 / СТРОЕНИЕ</p>
+        <h2>Как устроена<br>молекула?</h2>
+        <p>Этанол состоит из двух атомов углерода, шести атомов водорода и одного атома кислорода. Его структурная формула — CH₃–CH₂–OH.</p>
+      </article>
+      <article class="info-card glass">
+        <p class="eyebrow">02 / ГИДРОКСИЛЬНАЯ ГРУППА</p>
+        <h2>Группа <span class="blue-text">–OH</span></h2>
+        <p>Гидроксильная группа определяет принадлежность вещества к спиртам и влияет на его свойства. Связь O–H делает молекулу полярной.</p>
+      </article>
+      <article class="info-card glass">
+        <p class="eyebrow">03 / СВОЙСТВА</p>
+        <h2>Кратко об этаноле</h2>
+        <p>При обычных условиях этанол — бесцветная летучая жидкость. Он смешивается с водой и широко используется как растворитель и сырьё в промышленности.</p>
+      </article>
+    </section>
+
+    <footer class="footer">
+      <div><span class="footer-mark">M.</span><span>Учебный проект · 3D Chemistry</span></div>
+      <div class="authors">Трофимус.М.К. <span>·</span> Греков.Д.А. <span>·</span> Группа МТ-1126</div>
+    </footer>
+  </main>
+
+  <script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+
+// Экран приветствия
+const intro = document.querySelector('#intro');
+const site = document.querySelector('#site');
+document.querySelector('#enterBtn').addEventListener('click', () => {
+  intro.classList.add('hidden');
+  site.classList.add('ready');
 });
-B.forEach(function(b){
-  var p=P[b[0]],q=P[b[1]],d=q.clone().sub(p),len=d.length(),r=new THREE.Mesh(rod,rodMat);
-  r.scale.set(.1,len,.1);r.position.copy(p).add(q).multiplyScalar(.5);
-  r.quaternion.setFromUnitVectors(Y,d.normalize());group.add(r);
+window.addEventListener('load', () => {
+  setTimeout(() => { intro.classList.add('hidden'); site.classList.add('ready'); }, 4200);
 });
 
-/* подписи всегда повёрнуты к камере и стоят на ближней стороне шарика */
-var wp=new THREE.Vector3(),dir=new THREE.Vector3();
-function place(){
-  for(var i=0;i<balls.length;i++){
-    balls[i].getWorldPosition(wp);
-    dir.subVectors(camera.position,wp).normalize();
-    tags[i].position.copy(wp).addScaledVector(dir,balls[i].scale.x+.03);
-  }
+// Стеклянный курсор с буквой М
+const cursor = document.querySelector('.cursor');
+window.addEventListener('pointermove', (event) => {
+  cursor.style.left = `${event.clientX}px`;
+  cursor.style.top = `${event.clientY}px`;
+});
+
+// Сцена Three.js
+const canvas = document.querySelector('#molecule');
+const frame = canvas.parentElement;
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+camera.position.set(0, 1.25, 8.8);
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.25;
+
+scene.add(new THREE.AmbientLight(0xb9dfff, 1.7));
+const keyLight = new THREE.PointLight(0x8ccfff, 85, 30);
+keyLight.position.set(2.5, 4, 5); scene.add(keyLight);
+const warmLight = new THREE.PointLight(0xffc58e, 45, 25);
+warmLight.position.set(-4, -2, 2); scene.add(warmLight);
+const rimLight = new THREE.PointLight(0x398fff, 65, 20);
+rimLight.position.set(1, 1, -4); scene.add(rimLight);
+
+const molecule = new THREE.Group();
+scene.add(molecule);
+
+const materials = {
+  C: new THREE.MeshPhysicalMaterial({ color: 0x52647b, roughness: .25, metalness: .18, clearcoat: 1, clearcoatRoughness: .12 }),
+  H: new THREE.MeshPhysicalMaterial({ color: 0xf2d8ae, roughness: .3, metalness: .04, clearcoat: .8 }),
+  O: new THREE.MeshPhysicalMaterial({ color: 0xe85f70, roughness: .22, metalness: .08, clearcoat: 1, clearcoatRoughness: .1 })
+};
+const atomGeometry = new THREE.IcosahedronGeometry(1, 2);
+const atomPositions = [
+  { el:'C', p:[-1.05,0,0], r:.67 }, { el:'C', p:[.48,0,0], r:.67 },
+  { el:'O', p:[1.88,0,0], r:.62 }, { el:'H', p:[2.93,0,0], r:.39 },
+  { el:'H', p:[-1.45,1.12,.08], r:.39 }, { el:'H', p:[-1.45,-1.12,.08], r:.39 },
+  { el:'H', p:[-1.45,0,-1.08], r:.39 }, { el:'H', p:[.65,1.12,.08], r:.39 },
+  { el:'H', p:[.65,-1.12,.08], r:.39 }
+];
+
+function addLabel(text, color, size=0.48) {
+  const c = document.createElement('canvas');
+  c.width = 128; c.height = 128;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,128,128);
+  ctx.font = '700 68px Manrope, Arial';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = color; ctx.shadowColor = '#071426'; ctx.shadowBlur = 5;
+  ctx.fillText(text,64,66);
+  const texture = new THREE.CanvasTexture(c);
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map:texture, transparent:true, depthTest:false }));
+  sprite.scale.set(size,size,1);
+  return sprite;
 }
 
-var dist=14,zoom=1;
-function setZoom(z){zoom=Math.min(2.2,Math.max(.55,z));camera.position.z=dist/zoom;}
-function fit(){
-  var w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.setSize(w,h,false);
-  camera.aspect=w/h;camera.updateProjectionMatrix();
-  var t=Math.tan(camera.fov*Math.PI/360);dist=Math.max(3.4/(t*camera.aspect),3.3/t);setZoom(zoom);
+atomPositions.forEach(({el,p,r}) => {
+  const atom = new THREE.Mesh(atomGeometry, materials[el]);
+  atom.position.set(...p); atom.scale.setScalar(r);
+  molecule.add(atom);
+  const label = addLabel(el, el==='H' ? '#594832' : '#f4f8ff', el==='H' ? .34 : .48);
+  label.position.set(p[0],p[1],p[2]+r*.78);
+  molecule.add(label);
+});
+
+function bond(a,b,r=.105) {
+  const start = new THREE.Vector3(...a), end = new THREE.Vector3(...b);
+  const delta = new THREE.Vector3().subVectors(end,start);
+  const mesh = new THREE.Mesh(
+    new THREE.CylinderGeometry(r,r,delta.length(),16),
+    new THREE.MeshPhysicalMaterial({ color:0x9bbbd2, roughness:.28, metalness:.3, clearcoat:.7 })
+  );
+  mesh.position.copy(start).add(end).multiplyScalar(.5);
+  mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());
+  molecule.add(mesh);
 }
-if(window.ResizeObserver)new ResizeObserver(fit).observe(stage);
-window.addEventListener('resize',fit);fit();
+const P = atomPositions.map(a=>a.p);
+[[0,1],[1,2],[2,3],[0,4],[0,5],[0,6],[1,7],[1,8]].forEach(([a,b])=>bond(P[a],P[b],a===0&&b===1?.12:.09));
 
-var pts={},pause=0,ang=new THREE.Euler(),qd=new THREE.Quaternion();
-function idle(){pause=performance.now()+2500;}
-function rot(dx,dy){ang.set(dy*.009,dx*.009,0);qd.setFromEuler(ang);group.quaternion.premultiply(qd);}
-canvas.addEventListener('pointerdown',function(e){
-  try{canvas.setPointerCapture(e.pointerId);}catch(x){}
-  pts[e.pointerId]={x:e.clientX,y:e.clientY};hint.classList.add('off');idle();
-});
-canvas.addEventListener('pointermove',function(e){
-  var p=pts[e.pointerId];if(!p)return;
-  var ids=Object.keys(pts);
-  if(ids.length>1){
-    var o=pts[ids[0]==e.pointerId?ids[1]:ids[0]];
-    var d0=Math.hypot(p.x-o.x,p.y-o.y),d1=Math.hypot(e.clientX-o.x,e.clientY-o.y);
-    if(d0>8)setZoom(zoom*d1/d0);
-  }else rot(e.clientX-p.x,e.clientY-p.y);
-  p.x=e.clientX;p.y=e.clientY;idle();
-});
-function up(e){delete pts[e.pointerId];idle();}
-canvas.addEventListener('pointerup',up);canvas.addEventListener('pointercancel',up);
-canvas.addEventListener('wheel',function(e){e.preventDefault();setZoom(zoom*(e.deltaY<0?1.08:.93));hint.classList.add('off');idle();},{passive:false});
-canvas.addEventListener('keydown',function(e){
-  var m={ArrowLeft:[-14,0],ArrowRight:[14,0],ArrowUp:[0,-14],ArrowDown:[0,14]}[e.key];
-  if(m)rot(m[0],m[1]);
-  else if(e.key==='+'||e.key==='=')setZoom(zoom*1.1);
-  else if(e.key==='-')setZoom(zoom/1.1);
-  else return;
-  e.preventDefault();hint.classList.add('off');idle();
-});
+molecule.rotation.set(.13,-.25,.02);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = .055;
+controls.enablePan = false;
+controls.minDistance = 5.2;
+controls.maxDistance = 12;
+controls.autoRotate = true;
+controls.autoRotateSpeed = .7;
 
-var calm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-var spin=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),.005);
-(function tick(){
-  requestAnimationFrame(tick);
-  if(!calm&&!Object.keys(pts).length&&performance.now()>pause)group.quaternion.premultiply(spin);
-  place();renderer.render(scene,camera);
-})();
-})();
-</script>
+function resize() {
+  const w = frame.clientWidth, h = frame.clientHeight;
+  renderer.setSize(w,h,false);
+  camera.aspect = w/h;
+  camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(frame);
+resize();
+
+const clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+  if (!controls.enabled) return;
+  controls.update();
+  // Мягкое движение света добавляет объём и живость сцене.
+  keyLight.position.x = 2.5 + Math.sin(t*.45)*.7;
+  renderer.render(scene,camera);
+}
+animate();
+
+  </script>
 </body>
 </html>
