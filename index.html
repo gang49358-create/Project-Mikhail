@@ -67,6 +67,24 @@ body>*:not(#particleField):not(#preloader):not(#welcomeModal):not(#cursorGlow){p
 .section:hover>.kicker{letter-spacing:.23em}
 @media(prefers-reduced-motion:reduce){#particleField{display:none}.reveal{opacity:1;transform:none;transition:none}.hero>div:first-child,.hero .model{animation:none}.glass.card,.glass.stat,.glass.reaction,.glass.mini{transition:none}.glass.card:hover,.glass.stat:hover,.glass.reaction:hover,.glass.mini:hover{transform:none}}
 
+
+/* Project closing screen */
+.finish-section{padding:18px 0 56px;text-align:center}
+.finish-button{display:inline-flex;align-items:center;gap:12px;padding:15px 25px;border:1px solid #83e9ef88;border-radius:15px;background:linear-gradient(110deg,#79e8ef25,#8aafff25);color:#dffcff;font:800 13px Manrope;letter-spacing:.02em;cursor:pointer;box-shadow:0 10px 34px #0005,0 0 24px #79e8ef18;transition:transform .25s,box-shadow .25s,border-color .25s}
+.finish-button:hover{transform:translateY(-3px);border-color:#a7fff5;box-shadow:0 14px 38px #0006,0 0 32px #79e8ef35}
+.finish-button .finish-arrow{font-size:18px;color:#8ef3ee}
+#finishModal{position:fixed;inset:0;z-index:1100;display:grid;place-items:center;padding:20px;background:#020914c9;backdrop-filter:blur(13px);opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s ease}
+#finishModal.show{opacity:1;visibility:visible}
+.finish-card{position:relative;width:min(490px,100%);padding:40px 28px 32px;text-align:center;border:1px solid #83e9ef66;border-radius:27px;background:radial-gradient(ellipse at 50% 0%,#1c5365 0,transparent 58%),linear-gradient(145deg,#102b43,#08182b);box-shadow:0 28px 100px #000b,inset 0 1px #ffffff24;transform:translateY(18px) scale(.97);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+#finishModal.show .finish-card{transform:translateY(0) scale(1)}
+.finish-emblem{width:70px;height:70px;margin:0 auto 21px;display:grid;place-items:center;border:1px solid #79e8ef88;border-radius:22px;background:#79e8ef14;color:#a8fff7;font:700 22px Unbounded;box-shadow:0 0 38px #79e8ef25, inset 0 0 18px #79e8ef12}
+.finish-card h2{font:600 clamp(23px,5vw,31px) Unbounded;line-height:1.35;margin:0 0 12px;background:linear-gradient(100deg,#d9ffff,#8ce8ed 55%,#b8b2ff);background-clip:text;color:transparent}
+.finish-card p{margin:0;color:#b5cadd;font-size:14px}
+.finish-sign{margin-top:23px;padding-top:18px;border-top:1px solid #b7dfff25;color:#e8f8ff;font:600 15px Unbounded;letter-spacing:.04em}
+.finish-close{margin-top:25px;border:1px solid #79e8ef55;border-radius:11px;padding:10px 19px;background:#79e8ef12;color:#bdf9f5;font:700 12px Manrope;cursor:pointer;transition:background .2s,transform .2s}
+.finish-close:hover{background:#79e8ef25;transform:translateY(-2px)}
+@media(prefers-reduced-motion:reduce){#finishModal,.finish-card{transition:none}.finish-button,.finish-close{transition:none}}
+
 </style>
 </head>
 <body>
@@ -107,7 +125,19 @@ body>*:not(#particleField):not(#preloader):not(#welcomeModal):not(#cursorGlow){p
 <article class="glass reaction"><h3>Дегидратация</h3><div class="eq">C₂H₅OH → C₂H₄ + H₂O</div><p>В результате отщепления воды может образоваться этилен.</p></article></div></section>
 <section class="section" id="project"><div class="kicker">04 / О проекте</div><h2>Как создавалась работа</h2><div class="story"><article class="glass storymain"><p>Мы создали этот сайт как наглядное дополнение к изучению темы «Спирты. Этанол». Нам хотелось представить химическую информацию не только в виде текста, но и через современный интерактивный интерфейс.</p><p>Для разработки использовались HTML для структуры страницы, CSS для оформления и адаптивного дизайна, а JavaScript — для интерактивной трёхмерной модели молекулы. Визуализация работает на Canvas и не требует сторонних 3D-библиотек.</p><p>В результате получилась небольшая цифровая лаборатория, в которой можно изучить состав молекулы, рассмотреть её пространственную модель и повторить основные свойства этанола.</p></article><div class="stack"><div class="glass mini"><b>Авторы проекта</b><span>Трофимус Михаил<br>Греков Данил</span></div><div class="glass mini"><b>Учебная группа</b><span>МТ-1126</span></div><div class="glass mini"><b>Технологии</b><span>HTML · CSS · JavaScript · Canvas</span></div></div></div></section>
 <footer><span><b>CHEMLAB / ЭТАНОЛ</b> — интерактивная учебная работа</span><span>Молекулярная формула C₂H₆O</span></footer>
+<section class="finish-section" aria-label="Завершение проекта">
+  <button class="finish-button" id="finishProject" type="button">Закончить осмотр проекта <span class="finish-arrow" aria-hidden="true">↗</span></button>
+</section>
 </main>
+<div id="finishModal" role="dialog" aria-modal="true" aria-labelledby="finishTitle">
+  <div class="finish-card">
+    <div class="finish-emblem">M</div>
+    <h2 id="finishTitle">Спасибо за внимание!</h2>
+    <p>Благодарим за знакомство с нашим интерактивным проектом об этаноле.</p>
+    <div class="finish-sign">С уважением, MiDA</div>
+    <button class="finish-close" id="finishClose" type="button">Вернуться к проекту</button>
+  </div>
+</div>
 <script>
 (()=>{
 const c=document.getElementById('mol'),ctx=c.getContext('2d'),formula=document.getElementById('formulaView');
@@ -191,6 +221,21 @@ function frame(ts){if(!lastTime)lastTime=ts;const dt=Math.min(40,ts-lastTime);la
  let tick=0;const draw=()=>{ctx.clearRect(0,0,w,h);for(let i=0;i<particles.length;i++){const p=particles[i];p.x+=p.vx;p.y+=p.vy;if(p.x<-10)p.x=w+10;if(p.x>w+10)p.x=-10;if(p.y<-10)p.y=h+10;if(p.y>h+10)p.y=-10;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(121,232,239,'+p.a+')';ctx.fill();for(let j=i+1;j<particles.length;j++){const q=particles[j],dx=p.x-q.x,dy=p.y-q.y,d=dx*dx+dy*dy;if(d<95*95){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle='rgba(121,232,239,'+(.075*(1-d/(95*95)))+')';ctx.lineWidth=.7;ctx.stroke()}}}tick++;raf=requestAnimationFrame(draw)};
  resize();addEventListener('resize',resize,{passive:true});draw();
  document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf)}else if(!reduce)draw()});
+})();
+</script>
+
+
+<script>
+(()=> {
+ const modal=document.getElementById('finishModal');
+ const open=document.getElementById('finishProject');
+ const close=document.getElementById('finishClose');
+ if(!modal||!open||!close)return;
+ const hide=()=>{modal.classList.remove('show');open.focus()};
+ open.addEventListener('click',()=>{modal.classList.add('show');close.focus()});
+ close.addEventListener('click',hide);
+ modal.addEventListener('click',e=>{if(e.target===modal)hide()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('show'))hide()});
 })();
 </script>
 
